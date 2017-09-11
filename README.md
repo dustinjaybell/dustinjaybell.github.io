@@ -1,2 +1,1 @@
-# dustinjaybell.github.io
-forclass
+HELL0 W0RLD

@@ -1,6 +1,57 @@
-blaaaa
-this is a thing but i dont know how to add linebreaks
-I am so confused
-buttsbuttsbuttsbutts
-Hello i am doing hardcore coding like in the matrix YOOOOOOOOOO  ITS BADASSSSS aparently i am a really bad typist,
-i used to be better at typing but apparently im really slow now  its a pain in the ass <strong>stuff <strong>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Dustin Bell </title>
+
+  <link rel="icon" type="image/ico" href="images/favicon.ico">
+  <link rel="apple-touch-icon" href="images/avatar-512.jpg">
+
+  <link rel="stylesheet" type="text/css" href="/css/styles.css">
+  <link rel="stylesheet" type="text/css" href="/css/font-awesome-4.4.0/css/font-awesome.min.css">
+
+  <script src="http://d3js.org/d3.v4.min.js"></script>
+
+</head>
+
+<body>
+
+  <div id="background"></div>
+
+<section>
+
+  <h1>I tried to steal your webpage to figure out how it works Hello</h1>
+  <p>But There's not much to see here and i don't know why.</p>
+  <p>this is a line break
+  <p>though i guess i learned line breaks and how to make links <a href="http://www.dustinjbell.com/">Dustinjaybell</a>
+</section>
+
+<div id="links">
+
+  <a href="https://twitter.com/forgottentitan">Twitter</a>
+</div>
+<a href="https://nuclearsecrecy.com/nukemap/">Data viz</a>
+</div>
+<script>
+
+  var hour = new Date().getHours(),
+      dawn = hour >= 4 && hour <= 7,
+      dusk = hour >= 18 && hour <= 20,
+      night = hour > 20 || hour < 4;
+
+  if (night) var greetings = ["Go to bed"];
+  else if (dusk) var greetings = ["Good evening"]
+  else if (dawn) var greetings = ["Good morning", "Rise and shine"];
+  else var greetings = ["Hello", "Sup", "Oh, hi there"];
+
+  var text = greetings[Math.floor(Math.random()*greetings.length)];
+  d3.select("h1").text(text);
+
+</script>
+
+
+</body>
+
+</html>

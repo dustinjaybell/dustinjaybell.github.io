@@ -26,36 +26,3 @@
       <rect x="650" y="256" width="1300" height="512" stroke="#efe9ad" fill="#efe9ad" stroke-width="5"/>
       <circle cx="200" cy="200" r="160" stroke="black" fill="black" stroke-width="5"/>
   </svg>
-  <h1>I tried to steal your webpage to figure out how it works Hello</h1>
-  <p>But There's not much to see here and i don't know why.</p>
-  <p>this is a line break
-  <p>though i guess i learned line breaks and how to make links <a href="http://www.dustinjbell.com/">Dustinjaybell</a>
-</section>
-
-<div id="links">
-
-  <a href="https://twitter.com/forgottentitan">Twitter</a>
-</div>
-<a href="https://nuclearsecrecy.com/nukemap/">Data viz</a>
-</div>
-<script>
-
-  var hour = new Date().getHours(),
-      dawn = hour >= 4 && hour <= 7,
-      dusk = hour >= 18 && hour <= 20,
-      night = hour > 20 || hour < 4;
-
-  if (night) var greetings = ["Go to bed"];
-  else if (dusk) var greetings = ["Good evening"]
-  else if (dawn) var greetings = ["Good morning", "Rise and shine"];
-  else var greetings = ["Hello", "Sup", "Oh, hi there"];
-
-  var text = greetings[Math.floor(Math.random()*greetings.length)];
-  d3.select("h1").text(text);
-
-</script>
-
-
-</body>
-
-</html>

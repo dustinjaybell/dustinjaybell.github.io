@@ -1,0 +1,15 @@
+---
+---
+
+$myredcolor: violet;
+$bigtext: 32px;
+
+
+@mixin fontstyle(){
+  color: $myredcolor;
+  text-decoration:line-through;
+}
+h1{
+  color: $myredcolor;
+}
+p.newThing{color: red;}

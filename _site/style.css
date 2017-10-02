@@ -1,4 +1,5 @@
-p#redParagraph{
-  color: purple;
-}
-p.newThing{color: red;}
+h1 {
+  color: violet; }
+
+p.newThing {
+  color: red; }

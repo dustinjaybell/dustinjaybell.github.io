@@ -14,15 +14,35 @@
 <script>
 function draw(dataArray) {
 
+
   var svg = d3.select("#mysvg");
 
   var circles= svg.selectAll(".dot")
   .data(dataArray);
 
+  var labels=svg.selectAll(".label")
+    .data(dataArray);
+    labels.exit().remove();
+
     circles.exit()
       .transition().duration(1000)
       .attr("r",0)
       .remove();
+
+      var enterLabels = labels.enter().append("text")
+        .attr("class", "label")
+        .attr("y", "20")
+        .attr("font-size", "8px")
+        .attr("text-anchor", "middle")
+        .attr("x", function(d, index){
+          return 50 * (index +1 );
+        });
+
+      labels.merge(enterLabels)
+        .text(function(d) {
+            return d.country;
+
+      });
 
       var enterCircles = circles.enter().append("circle")
       .attr("r",0)
@@ -35,12 +55,18 @@ function draw(dataArray) {
 circles.merge(enterCircles)
   .transition().duration(1000)
   .attr("r", function(d){
-    return d;
-
-})
+    return d.value;
+    })
+    .attr("fill",function(d){
+      return d.color;
+    });
 }
 
-draw([2,4,6,8]);
+d3.csv("data.csv",function(file){
+    console.log(file);
+    draw(file);
+})
+
   </script>
 
 </body>

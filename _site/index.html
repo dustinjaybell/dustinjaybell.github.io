@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>This PAGE IS RAD</title>
+    <title>Happy MUELLER DAY</title>
 
       <link rel= "stylesheet" href="style.css"/>
   </head>
@@ -30,10 +30,26 @@
 <img src="Capture.JPG">
 
 </p>
+<script src="numbers.js"></script>
+
+<svg id="mysvg"></svg>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+<script>
+d3.queue()
+  .defer(d3.csv,"data1.csv")
+  .defer(d3.csv, "sealevel.csv")
+  .awaitAll(function(error,data){
+      console.log(error,data);
+      var sealevelData = data[0]
+      sealevelData.forEach(function(d,i){
+        console.log(i,d);
+      });
+  });
 
 
-
-
+  </script>
 
 <a href="http://actuariesclimateindex.org/explore/"> reference </a>
 </body>

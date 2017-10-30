@@ -24,10 +24,18 @@ layout: default
 <img src="Capture.JPG">
 
 </p>
+<script src="numbers.js"></script>
 
+<svg id="mysvg"></svg>
 
+<script src="https://d3js.org/d3.v4.min.js"></script>
 
+<script>
+d3.csv("data1.csv", function(error,data) {
+  console.log(data);
+});
 
+  </script>
 
 <a href="http://actuariesclimateindex.org/explore/"> reference </a>
 </body>

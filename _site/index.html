@@ -39,7 +39,7 @@
 <script>
 d3.queue()
   .defer(d3.csv,"data1.csv")
-  .defer(d3.csv, "sealevel.csv")
+  .defer(d3.csv, "sealevel1.csv")
   .awaitAll(function(error,data){
       console.log(error,data);
       var sealevelData = data[0]

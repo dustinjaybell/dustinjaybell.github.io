@@ -15,41 +15,94 @@ layout: default
 {background-color: lightblue;}
 >
 <p> CLIMATE DATASETS IN NORTH AMERICA</p>
+<p> BARCHARTS</p>
+
 
 <script src="numbers.js"></script>
-<svg width="2000px" height="2000px">
+<svg width="2000px" height="900px">
   <rect x="0" y="0" width="900px" height="200px" stroke="#efe9ad" fill="#efe9ad" stroke-width="5"/>
-  <rect x="0" y="0" width="300px" height="100x" stroke="black" fill="blue" stroke-width="5"/>
+  <rect x="0" y="0" width="300px" height="100px" stroke="black" fill="blue" stroke-width="5"/>
   <rect x="300" y="0" width="300px" height="100px" stroke="#efe9ad" fill="blue" stroke-width="5"/>
   <rect x="600" y="0" width="300px" height="100px" stroke="#efe9ad" fill="yellow" stroke-width="5"/>
   <rect x="0" y="100" width="300px" height="100px" stroke="#efe9ad" fill="green" stroke-width="5"/>
   <rect x="300" y="100" width="300px" height="100px" stroke="#efe9ad" fill="purple" stroke-width="5"/>
-  <rect x="600" y="100" width="300px" height="100pxd" stroke="black" fill="black" stroke-width="5"/>
+  <rect x="600" y="100" width="300px" height="100px" stroke="black" fill="black" stroke-width="5"/>
   <rect x="0" y="220" width="900px" height="500px" stroke="#efe9ad" fill="#efe9ad" stroke-width="5"/>
 </svg>
-
-<svg id="mysvg"></svg>
+<p>MAP?</p>
+<svg id="mysvg" width="2000px" height="2000px"></svg>
 
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
-
-<script>
+<script src="https://unpkg.com/topojson@3"></script><script>
 d3.queue()
+  .defer(d3.json,"usa.json")
   .defer(d3.csv,"data1.csv")
-  .defer(d3.csv, "sealevel1.csv")
-  .defer(d3.csv, "hightemp.csv")
-  .defer(d3.csv, "drydays.csv")
-  .defer(d3.csv, "maxrainfall.csv")
-  .defer(d3.csv, "Tempbelow.csv")
+  .defer(d3.csv,"sealevel1.csv")
+  .defer(d3.csv,"hightemp.csv")
+  .defer(d3.csv,"drydays.csv")
+  .defer(d3.csv,"maxrainfall.csv")
+  .defer(d3.csv,"Tempbelow.csv")
   .awaitAll(function(error,data){
       console.log(error,data);
-      var sealevelData = data[0]
+      var sealevelData = data[2]
+      var sealevelLookup = {};
+      var regionLookup = {
+        "MA": "northeast",
+        "CA": "MID"
+      };
       sealevelData.forEach(function(d,i){
         console.log(i,d);
+        sealevelLookup[d.Location] = d;
       });
+      console.log(sealevelLookup);
+
+      var geoJSON = topojson.feature(data[0], data[0].objects.states);
+      var proj = d3.geoAlbersUsa()
+    .fitSize([2000,2000], geoJSON);
+
+  var path = d3.geoPath()
+    .projection(proj);
+
+    var states = d3.select("#mysvg").selectAll("path")
+  .data(geoJSON.features);
+
+states.enter().append("path")
+  .attr("d", function(d) {
+    return path(d);
+  })
+  .attr("fill",function(d){
+    var region = regionLookup[d.id];
+    var mydata = sealevelLookup[region];
+    console.log(d.id, mydata);
+      if(d.id=="CA"){
+        return"green";
+      }
+      if(d.id=="NV"){
+        return"green";
+      }
+      else{
+
+        return "#ccc";
+      }
+  })
+      console.log(geoJSON);
+
+  var points = [
+    {"name": "Boston", "coords": [-71.0589, 42.3601]},
+
+  ];
+
+  var points = d3.select("#mysvg").selectAll("circle")
+    .data(points);
+
+  points.enter().append("circle")
+    .attr("r",5)
+    .attr("fill","#990099")
+    .attr("transform", function(d){
+      return "translate(" + proj(d.coords) + ")";
+    })
   });
-
-
   </script>
 
 <a href="http://actuariesclimateindex.org/explore/"> reference </a>

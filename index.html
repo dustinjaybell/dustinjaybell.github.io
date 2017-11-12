@@ -20,14 +20,7 @@ layout: default
 
 <script src="numbers.js"></script>
 <svg width="2000px" height="900px">
-  <rect x="0" y="0" width="900px" height="200px" stroke="#efe9ad" fill="#efe9ad" stroke-width="5"/>
-  <rect x="0" y="0" width="300px" height="100px" stroke="black" fill="blue" stroke-width="5"/>
-  <rect x="300" y="0" width="300px" height="100px" stroke="#efe9ad" fill="blue" stroke-width="5"/>
-  <rect x="600" y="0" width="300px" height="100px" stroke="#efe9ad" fill="yellow" stroke-width="5"/>
-  <rect x="0" y="100" width="300px" height="100px" stroke="#efe9ad" fill="green" stroke-width="5"/>
-  <rect x="300" y="100" width="300px" height="100px" stroke="#efe9ad" fill="purple" stroke-width="5"/>
-  <rect x="600" y="100" width="300px" height="100px" stroke="black" fill="black" stroke-width="5"/>
-  <rect x="0" y="220" width="900px" height="500px" stroke="#efe9ad" fill="#efe9ad" stroke-width="5"/>
+
 </svg>
 <p>MAP?</p>
 <svg id="mysvg" width="2000px" height="2000px"></svg>
@@ -48,14 +41,69 @@ d3.queue()
       var sealevelData = data[2]
       var sealevelLookup = {};
       var regionLookup = {
-        "MA": "northeast",
-        "CA": "MID"
+        "AL":"SEA",
+        "AK":"ALA",
+        "AZ":"SWP",
+        "AR":"SEA",
+        "CA":"SWP",
+        "CO":"SPL",
+        "CT":"CEA",
+        "DE":"CEA",
+        "FL":"SEA",
+        "GA":"SEA",
+        "HI":"SWP",
+        "ID":"CWP",
+        "IL":"MID",
+	      "IN":"MID",
+        "IA":"MID",
+        "KS":"SPL",
+        "KY":"MID",
+	      "LA":"SEA",
+        "ME":"CEA",
+        "MD":"CEA",
+	      "MA":"CEA",
+        "MI":"MID",
+        "MN":"MID",
+        "MS":"SEA",
+        "MO":"MID",
+        "MT":"SPL",
+        "NE":"SPL",
+        "NV":"SPL",
+        "NH":"CEA",
+        "NJ":"CEA",
+        "NM":"SWP",
+        "NY":"CEA",
+        "NC":"SEA",
+        "ND":"SPL",
+        "OH":"MID",
+        "OK":"SPL",
+        "OR":"CWP",
+        "PA":"CEA",
+        "RI":"CEA",
+        "SC":"SEA",
+        "SD":"SPL",
+	      "TN":"SEA",
+        "TX":"SPL",
+        "UT":"SWP",
+	      "VT":"CEA",
+        "VA":"SEA",
+        "WA":"CWP",
+        "WV":"CEA",
+        "WI":"MID",
+        "WY":"SPL",
       };
       sealevelData.forEach(function(d,i){
         console.log(i,d);
         sealevelLookup[d.Location] = d;
       });
       console.log(sealevelLookup);
+
+      var xScale = d3.scaleLinear()
+        .domain([-5, 5])
+        .range([0, window.innerWidth]);
+
+      var firstX = xScale(data[0]);
+
 
       var geoJSON = topojson.feature(data[0], data[0].objects.states);
       var proj = d3.geoAlbersUsa()
@@ -74,22 +122,26 @@ states.enter().append("path")
   .attr("fill",function(d){
     var region = regionLookup[d.id];
     var mydata = sealevelLookup[region];
-    console.log(d.id, mydata);
+
+    console.log(d.id, mydata,  regionLookup);
+
+
       if(d.id=="CA"){
         return"green";
       }
       if(d.id=="NV"){
         return"green";
       }
+      if(d.id=="SEA"){
+        return"blue"
+      }
       else{
-
         return "#ccc";
       }
   })
       console.log(geoJSON);
 
   var points = [
-    {"name": "Boston", "coords": [-71.0589, 42.3601]},
 
   ];
 

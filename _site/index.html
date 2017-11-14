@@ -33,7 +33,69 @@
 
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
-<script src="https://unpkg.com/topojson@3"></script><script>
+<script src="https://unpkg.com/topojson@3"></script>
+<script>
+
+
+var regionLookup = {
+  "AL":"SEA",
+  "AK":"ALA",
+  "AZ":"SPW",
+  "AR":"SEA",
+  "CA":"SPW",
+  "CO":"SPL",
+  "CT":"CEA",
+  "DE":"CEA",
+  "FL":"SEA",
+  "GA":"SEA",
+  "HI":"SPW",
+  "ID":"CWP",
+  "IL":"MID",
+  "IN":"MID",
+  "IA":"MID",
+  "KS":"SPL",
+  "KY":"MID",
+  "LA":"SEA",
+  "ME":"CEA",
+  "MD":"CEA",
+  "MA":"CEA",
+  "MI":"MID",
+  "MN":"MID",
+  "MS":"SEA",
+  "MO":"MID",
+  "MT":"SPL",
+  "NE":"SPL",
+  "NV":"SPW",
+  "NH":"CEA",
+  "NJ":"CEA",
+  "NM":"SPW",
+  "NY":"CEA",
+  "NC":"SEA",
+  "ND":"SPL",
+  "OH":"MID",
+  "OK":"SPL",
+  "OR":"CWP",
+  "PA":"CEA",
+  "RI":"CEA",
+  "SC":"SEA",
+  "SD":"SPL",
+  "TN":"SEA",
+  "TX":"SPL",
+  "UT":"SPW",
+  "VT":"CEA",
+  "VA":"SEA",
+  "WA":"CWP",
+  "WV":"CEA",
+  "WI":"MID",
+  "WY":"SPL",
+};
+
+var sealevelLookup = {};
+
+var color_scale=d3.scaleLinear()
+  .domain([-5,0,5])
+  .range(["green","yellow","red"]);
+
 d3.queue()
   .defer(d3.json,"usa.json")
   .defer(d3.csv,"data1.csv")
@@ -45,123 +107,76 @@ d3.queue()
   .awaitAll(function(error,data){
       console.log(error,data);
       var sealevelData = data[2]
-      var sealevelLookup = {};
-      var regionLookup = {
-        "AL":"SEA",
-        "AK":"ALA",
-        "AZ":"SWP",
-        "AR":"SEA",
-        "CA":"SWP",
-        "CO":"SPL",
-        "CT":"CEA",
-        "DE":"CEA",
-        "FL":"SEA",
-        "GA":"SEA",
-        "HI":"SWP",
-        "ID":"CWP",
-        "IL":"MID",
-	      "IN":"MID",
-        "IA":"MID",
-        "KS":"SPL",
-        "KY":"MID",
-	      "LA":"SEA",
-        "ME":"CEA",
-        "MD":"CEA",
-	      "MA":"CEA",
-        "MI":"MID",
-        "MN":"MID",
-        "MS":"SEA",
-        "MO":"MID",
-        "MT":"SPL",
-        "NE":"SPL",
-        "NV":"SPL",
-        "NH":"CEA",
-        "NJ":"CEA",
-        "NM":"SWP",
-        "NY":"CEA",
-        "NC":"SEA",
-        "ND":"SPL",
-        "OH":"MID",
-        "OK":"SPL",
-        "OR":"CWP",
-        "PA":"CEA",
-        "RI":"CEA",
-        "SC":"SEA",
-        "SD":"SPL",
-	      "TN":"SEA",
-        "TX":"SPL",
-        "UT":"SWP",
-	      "VT":"CEA",
-        "VA":"SEA",
-        "WA":"CWP",
-        "WV":"CEA",
-        "WI":"MID",
-        "WY":"SPL",
-      };
       sealevelData.forEach(function(d,i){
-        console.log(i,d);
+        for (var poop in d) {
+          var num = +d[poop];
+
+          if (isNaN(num) == false) {
+            d[poop] = num;
+          }
+
+
+        }
         sealevelLookup[d.Location] = d;
       });
       console.log(sealevelLookup);
 
-      var xScale = d3.scaleLinear()
-        .domain([-5, 5])
-        .range([0, window.innerWidth]);
-
-      var firstX = xScale(data[0]);
-
-
       var geoJSON = topojson.feature(data[0], data[0].objects.states);
       var proj = d3.geoAlbersUsa()
-    .fitSize([2000,2000], geoJSON);
+        .fitSize([2000,2000], geoJSON);
 
-  var path = d3.geoPath()
-    .projection(proj);
+      var path = d3.geoPath()
+        .projection(proj);
 
-    var states = d3.select("#mysvg").selectAll("path")
-  .data(geoJSON.features);
+      var states = d3.select("#mysvg").selectAll("path")
+        .data(geoJSON.features);
 
-states.enter().append("path")
-  .attr("d", function(d) {
-    return path(d);
-  })
-  .attr("fill",function(d){
-    var region = regionLookup[d.id];
-    var mydata = sealevelLookup[region];
+      states.enter().append("path")
+        .attr("d", function(d) {
+          return path(d);
+        });
 
-    console.log(d.id, mydata,  regionLookup);
+      colorMap("Jan-16");
 
-
-      if(d.id=="CA"){
-        return"green";
-      }
-      if(d.id=="NV"){
-        return"green";
-      }
-      if(d.id=="SEA"){
-        return"blue"
-      }
-      else{
-        return "#ccc";
-      }
-  })
-      console.log(geoJSON);
-
-  var points = [
-
-  ];
-
-  var points = d3.select("#mysvg").selectAll("circle")
-    .data(points);
-
-  points.enter().append("circle")
-    .attr("r",5)
-    .attr("fill","#990099")
-    .attr("transform", function(d){
-      return "translate(" + proj(d.coords) + ")";
-    })
   });
+
+  function colorMap(column) {
+    d3.select("#mysvg").selectAll("path")
+      .attr("fill",function(d){
+        var stateId = d.id;
+
+        var region = regionLookup[stateId];
+        var mydata = sealevelLookup[region];
+
+        if (region=="MID")console.log(mydata[column])
+        if (mydata){
+          return color_scale(mydata[column]);
+        }
+        else{
+          return "#ccc";
+        }
+      });
+
+  }
+
+
   </script>
+
+
+  <div id="slidecontainer">
+  <input type="range" min="1966" max="2017" value="1966" class="slider" id="myRange">
+
+</div>
+<script>
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+    output.innerHTML = this.value;
+}
+</script>
 
 <a href="http://actuariesclimateindex.org/explore/"> reference </a>
 </body>

@@ -1,0 +1,5 @@
+
+                  map.selectAll("path").data(regionLookup).enter().append("path").attr('d', path)
+                      .style('fill', function(d) {
+                              return color_scale(d['properties']['CENSUSAREA']);
+                  

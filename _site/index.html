@@ -25,11 +25,11 @@
 
 
 <script src="numbers.js"></script>
-<svg width="2000px" height="900px">
+<p>Sealevel MAP</p>
+<svg id="mysvg" width="500px" height="500px"></svg>
+<p>Sealevel Barchart</p>
+<div id="mysvgdiv"width="500px" height="500px"></div>
 
-</svg>
-<p>MAP?</p>
-<svg id="mysvg" width="2000px" height="2000px"></svg>
 
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -90,7 +90,8 @@ var regionLookup = {
   "WY":"SPL",
 };
 
-var sealevelLookup = {};
+var dataLookup = {};
+var datasets;
 
 var color_scale=d3.scaleLinear()
   .domain([-5,0,5])
@@ -98,32 +99,18 @@ var color_scale=d3.scaleLinear()
 
 d3.queue()
   .defer(d3.json,"usa.json")
-  .defer(d3.csv,"data1.csv")
-  .defer(d3.csv,"sealevel1.csv")
-  .defer(d3.csv,"hightemp.csv")
-  .defer(d3.csv,"drydays.csv")
   .defer(d3.csv,"maxrainfall.csv")
+  .defer(d3.csv,"sealevel1.csv")
+  .defer(d3.csv,"hightemp1.csv")
+  .defer(d3.csv,"drydays.csv")
   .defer(d3.csv,"Tempbelow.csv")
   .awaitAll(function(error,data){
       console.log(error,data);
-      var sealevelData = data[2]
-      sealevelData.forEach(function(d,i){
-        for (var poop in d) {
-          var num = +d[poop];
-
-          if (isNaN(num) == false) {
-            d[poop] = num;
-          }
-
-
-        }
-        sealevelLookup[d.Location] = d;
-      });
-      console.log(sealevelLookup);
+      datasets = data;
 
       var geoJSON = topojson.feature(data[0], data[0].objects.states);
       var proj = d3.geoAlbersUsa()
-        .fitSize([2000,2000], geoJSON);
+        .fitSize([500,500], geoJSON);
 
       var path = d3.geoPath()
         .projection(proj);
@@ -136,19 +123,39 @@ d3.queue()
           return path(d);
         });
 
-      colorMap("Jan-16");
 
+      changeDataset(2);
   });
 
-  function colorMap(column) {
+  function changeDataset(datasetIndex) {
+    console.log(datasets)
+    var tempData = datasets[datasetIndex];
+    tempData.forEach(function(d,i){
+      for (var poop in d) {
+        var num = +d[poop];
+
+        if (isNaN(num) == false) {
+          d[poop] = num;
+        }
+
+
+      }
+      dataLookup[d.Location] = d;
+    });
+    console.log(dataLookup);
+
+    colorStates("1961.00");
+  }
+
+  function colorStates(column) {
     d3.select("#mysvg").selectAll("path")
       .attr("fill",function(d){
         var stateId = d.id;
 
         var region = regionLookup[stateId];
-        var mydata = sealevelLookup[region];
+        var mydata = dataLookup[region];
 
-        if (region=="MID")console.log(mydata[column])
+        
         if (mydata){
           return color_scale(mydata[column]);
         }
@@ -164,17 +171,36 @@ d3.queue()
 
 
   <div id="slidecontainer">
-  <input type="range" min="1966" max="2017" value="1966" class="slider" id="myRange">
+  <input type="range" min="1961" max="2017" value="1961" class="slider" id="myRange">
 
 </div>
 <script>
 var slider = document.getElementById("myRange");
-var output = document.getElementById("demo");
-output.innerHTML = slider.value; // Display the default slider value
+
+//var output = document.getElementById("demo");
+//output.innerHTML = slider.value; // Display the default slider value
 
 // Update the current slider value (each time you drag the slider handle)
 slider.oninput = function() {
-    output.innerHTML = this.value;
+  //  output.innerHTML = this.value;
+  colorStates(this.value+".00")
+}
+</script>
+
+<div id="slidecontainer2">
+<input type="range" min="1" max="5" value="1" class="slider" id="myRange1">
+
+</div>
+<script>
+var slider = document.getElementById("myRange1");
+
+//var output = document.getElementById("demo");
+//output.innerHTML = slider.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function(d) {
+//  output.innerHTML = this.value;
+changeDataset(this.value)
 }
 </script>
 

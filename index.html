@@ -99,11 +99,11 @@ var color_scale=d3.scaleLinear()
 
 d3.queue()
   .defer(d3.json,"usa.json")
-  .defer(d3.csv,"maxrainfall.csv")
-  .defer(d3.csv,"sealevel1.csv")
-  .defer(d3.csv,"hightemp1.csv")
-  .defer(d3.csv,"drydays.csv")
-  .defer(d3.csv,"Tempbelow.csv")
+  .defer(d3.csv,"maxrainfall3.csv")
+  .defer(d3.csv,"sealevel13.csv")
+  .defer(d3.csv,"hightemp13.csv")
+  .defer(d3.csv,"drydays3.csv")
+  .defer(d3.csv,"Tempbelow3.csv")
   .awaitAll(function(error,data){
       console.log(error,data);
       datasets = data;

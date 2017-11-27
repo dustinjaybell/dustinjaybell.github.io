@@ -21,8 +21,7 @@
 {background-color: lightblue;}
 >
 <p> CLIMATE DATASETS IN NORTH AMERICA</p>
-<p> BARCHARTS</p>
-
+<p>1 max rainfall, 2 sea level, 3 high temp, 4 dry days, 5 low temp</p>
 
 <script src="numbers.js"></script>
 <p>Sealevel MAP</p>
@@ -92,7 +91,8 @@ var regionLookup = {
 
 var dataLookup = {};
 var datasets;
-
+//var changename;
+//var changenumber;
 var color_scale=d3.scaleLinear()
   .domain([-5,0,5])
   .range(["green","yellow","red"]);
@@ -144,7 +144,7 @@ d3.queue()
     });
     console.log(dataLookup);
 
-    colorStates("1961.00");
+    colorStates("1");
   }
 
   function colorStates(column) {
@@ -155,7 +155,7 @@ d3.queue()
         var region = regionLookup[stateId];
         var mydata = dataLookup[region];
 
-        
+
         if (mydata){
           return color_scale(mydata[column]);
         }
@@ -171,7 +171,7 @@ d3.queue()
 
 
   <div id="slidecontainer">
-  <input type="range" min="1961" max="2017" value="1961" class="slider" id="myRange">
+  <input type="range" min="1" max="225" value="1" class="slider" id="myRange">
 
 </div>
 <script>
@@ -183,7 +183,7 @@ var slider = document.getElementById("myRange");
 // Update the current slider value (each time you drag the slider handle)
 slider.oninput = function() {
   //  output.innerHTML = this.value;
-  colorStates(this.value+".00")
+  colorStates(this.value)
 }
 </script>
 
@@ -201,10 +201,24 @@ var slider = document.getElementById("myRange1");
 slider.oninput = function(d) {
 //  output.innerHTML = this.value;
 changeDataset(this.value)
+//numbers(this.value)
+//if changenumber == 1
+//   changename("red");
+//   else if changenumber==2
+//   changename("blue");
+//   else if changenumber==3
+//   changename("purple");
+  // else if changenumber==4
+//   changename("boobs");
+//   else if changenumber==5
+  // changename("muave");
+
+
 }
+
 </script>
 
-<a href="http://actuariesclimateindex.org/explore/"> reference </a>
+<a href="http://actuariesclimateindex.org/explore/"> actuaries climax index </a>
 </body>
 
 </body>

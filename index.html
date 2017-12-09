@@ -7,7 +7,10 @@
       <link rel= "stylesheet" href="style.css"/>
   </head>
 
-  <body>
+  <body style="background-color: lightblue;
+  text-align: center;
+  fontstyle: veranda"
+  >
 <!doctype html>
 <html>
 <head>
@@ -20,7 +23,7 @@
 <body
 {background-color: lightblue;}
 >
-<p> CLIMATE DATASETS IN NORTH AMERICA!</p>
+<p style="font-size: 2em;"> CLIMATE DATASETS IN NORTH AMERICA!</p>
 <p>1 max rainfall, 2 sea level, 3 high temp, 4 dry days, 5 low temp</p>
 
 <script src="numbers.js"></script>
@@ -162,7 +165,8 @@ d3.queue()
         else{
           return "#ccc";
         }
-      });
+on("mouseover", tempData.show) ;
+     });
 
   }
 

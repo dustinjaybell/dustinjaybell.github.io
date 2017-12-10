@@ -9,7 +9,7 @@
 
   <body style="background-color: lightblue;
   text-align: center;
-  fontstyle: veranda"
+  font-family: Tahoma, Geneva, sans-serif;"
   >
 <!doctype html>
 <html>
@@ -23,18 +23,17 @@
 <body
 {background-color: lightblue;}
 >
-<p style="font-size: 2em;"> CLIMATE DATASETS IN NORTH AMERICA!</p>
-<p>1 max rainfall, 2 sea level, 3 high temp, 4 dry days, 5 low temp</p>
+<p style="font-size: 2em;"> Climate Change in North America!</p>
 
 <script src="numbers.js"></script>
-<p>Climate Map</p>
+
 <svg id="mysvg" width="500px" height="500px"></svg>
 
 <div id="mysvgdiv"width="500px" height="500px"></div>
 
-
-
-<script src="https://d3js.org/d3.v4.min.js"></script>
+<img src = "ref.jpg">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://unpkg.com/topojson@3"></script>
 <script>
 
@@ -99,6 +98,7 @@ var datasets;
 var color_scale=d3.scaleLinear()
   .domain([-5,0,5])
   .range(["green","yellow","red"]);
+var char="Max Rainfall per month"
 
 d3.queue()
   .defer(d3.json,"usa.json")
@@ -127,7 +127,7 @@ d3.queue()
         });
 
 
-      changeDataset(2);
+      changeDataset(1);
   });
 
   function changeDataset(datasetIndex) {
@@ -165,18 +165,21 @@ d3.queue()
         else{
           return "#ccc";
         }
-on("mouseover", tempData.show) ;
+
      });
 
   }
 
 
+
   </script>
 
-<p>Year</p>
-  <div id="slidecontainer">
-  <input type="range" min="1" max="225" value="1" class="slider" id="myRange">
 
+<div id="slidecontainer"> 1961
+  <input type="range" min="1" max="225" value="1" class="slider" id="myRange">
+2017
+</script>
+</output>
 </div>
 <script>
 var slider = document.getElementById("myRange");
@@ -188,15 +191,16 @@ var slider = document.getElementById("myRange");
 slider.oninput = function() {
   //  output.innerHTML = this.value;
   colorStates(this.value)
+
 }
+
 </script>
 
-<div id="slidecontainer2">
-<input type="range" min="1" max="5" value="1" class="slider" id="myRange1">
 
-</div>
+<p id=p1>Datasets</p1>
 
-<p>Datasets</p>
+<p></p>
+
 <script>
 var slider = document.getElementById("myRange1");
 
@@ -221,9 +225,17 @@ changeDataset(this.value)
 
 
 }
-
 </script>
 
+<button onclick="changeDataset(1)"> Rainfall </button>
+<button onclick="changeDataset(4)"> Dry Days </button>
+<button onclick="changeDataset(2)"> Sea Level </button>
+<button onclick="changeDataset(3)"> High Temperature </button>
+<button onclick="changeDataset(5)"> Low Temperature </button>
+
+
+<p></p>
+<p> This visualization is intended to show the increasing likelihood of extreme weather events due to climate change.  The data used is actuarial data from 1961-2017 and the changing colors represent the difference from the average.  as the great lakes region has no 'sea level' that map retains a solid yellow representing no change..</p>
 <a href="http://actuariesclimateindex.org/explore/"> actuaries climax index </a>
 </body>
 

@@ -27,7 +27,7 @@
 
 <script src="numbers.js"></script>
 
-<svg id="mysvg" width="500px" height="500px"></svg>
+<svg id="mysvg" width="500px" height="500px" onmouseover=></svg>
 
 <div id="mysvgdiv"width="500px" height="500px"></div>
 
@@ -37,7 +37,8 @@
 <script src="https://unpkg.com/topojson@3"></script>
 <script>
 
-
+var datasetlist = "rainfall"
+var climateinfo = "red"
 var regionLookup = {
   "AL":"SEA",
   "AK":"ALA",
@@ -98,7 +99,6 @@ var datasets;
 var color_scale=d3.scaleLinear()
   .domain([-5,0,5])
   .range(["green","yellow","red"]);
-var char="Max Rainfall per month"
 
 d3.queue()
   .defer(d3.json,"usa.json")
@@ -132,6 +132,13 @@ d3.queue()
 
   function changeDataset(datasetIndex) {
     console.log(datasets)
+    var weatherstat
+    var boob
+      if (datasetIndex==1){weatherstat="rainfall", boob="Increased rainfail may lead to flooding, soil erosion and mud slides"}
+      else if (datasetIndex==2){weatherstat="Sea Level", boob="Higher Sea Levels cause multiple problems rising sea levels show hotter seas.  Along with causing flooding this can create larger stronger hurricanes. In this map the Great Lakes region does not change as it has no sea shores"}
+      else if (datasetIndex==3){weatherstat="High Temperatures", boob="Higher temperatures can effect sea levels decrease rainfall, increase fire risk and cause heat strokes"}
+      else if (datasetIndex==4){weatherstat="Dry Days", boob="Increased days without rain can lead to drought and famine as well as increasing fire risk"}
+      else if (datasetIndex==5){weatherstat="Low Temperatures", boob="Temmperatures lower than usual can be hazardours to places without adequate infrastructure"}
     var tempData = datasets[datasetIndex];
     tempData.forEach(function(d,i){
       for (var poop in d) {
@@ -139,11 +146,14 @@ d3.queue()
 
         if (isNaN(num) == false) {
           d[poop] = num;
+
         }
 
 
       }
       dataLookup[d.Location] = d;
+      document.getElementById("datasetlist").innerHTML = weatherstat;
+      document.getElementById("climateinfo").innerHTML = boob
     });
     console.log(dataLookup);
 
@@ -197,7 +207,7 @@ slider.oninput = function() {
 </script>
 
 
-<p id=p1>Datasets</p1>
+<p id=p1> <span id="datasetlist"></span></p1>
 
 <p></p>
 
@@ -234,8 +244,15 @@ changeDataset(this.value)
 <button onclick="changeDataset(5)"> Low Temperature </button>
 
 
+
+<p> This visualization is intended to show the
+   increasing likelihood of extreme weather events
+    due to climate change.  The data used is actuarial
+     data from 1961-2017 and the changing colors represent
+     the difference from the average.</p>
+<span id= "climateinfo"></span>
 <p></p>
-<p> This visualization is intended to show the increasing likelihood of extreme weather events due to climate change.  The data used is actuarial data from 1961-2017 and the changing colors represent the difference from the average.  as the great lakes region has no 'sea level' that map retains a solid yellow representing no change..</p>
+
 <a href="http://actuariesclimateindex.org/explore/"> actuaries climax index </a>
 </body>
 
